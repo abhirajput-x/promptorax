@@ -10,7 +10,7 @@ export function Footer() {
               <div className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-primary to-cyan-400 glow-cyan">
                 <Sparkles className="h-4 w-4 text-background" />
               </div>
-              <span className="font-display text-lg font-bold">Prompt<span className="text-primary">Verse</span></span>
+              <span className="font-display text-lg font-bold">Prompt<span className="text-primary">ora</span></span>
             </div>
             <p className="mt-4 max-w-sm text-sm text-muted-foreground">
               The universe of AI prompts. Discover, copy, and create stunning AI-generated visuals from the world's most talented creators.
@@ -46,7 +46,7 @@ export function Footer() {
         </div>
 
         <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 sm:flex-row">
-          <p className="text-xs text-muted-foreground">© 2026 PromptVerse. All rights reserved.</p>
+          <p className="text-xs text-muted-foreground">© 2026 Promptora. All rights reserved.</p>
           <p className="text-xs text-muted-foreground">Crafted for AI creators worldwide ✦</p>
         </div>
       </div>

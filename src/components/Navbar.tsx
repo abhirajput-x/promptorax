@@ -14,7 +14,7 @@ export function Navbar() {
             <Sparkles className="h-4 w-4 text-background" />
           </div>
           <span className="font-display text-lg font-bold tracking-tight">
-            Prompt<span className="text-primary">Verse</span>
+            Prompt<span className="text-primary">ora</span>
           </span>
         </a>
 
