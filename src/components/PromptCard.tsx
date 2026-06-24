@@ -11,6 +11,7 @@ export function PromptCard({ p }: { p: Prompt }) {
     e.stopPropagation();
     await navigator.clipboard.writeText(p.prompt);
     setCopied(true);
+    toast.success("Prompt Copied Successfully");
     setTimeout(() => setCopied(false), 1800);
   };
 
