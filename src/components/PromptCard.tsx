@@ -1,5 +1,6 @@
 import { Copy, Eye, Bookmark, Check } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 import type { Prompt } from "@/lib/prompts";
 
 export function PromptCard({ p }: { p: Prompt }) {
@@ -10,6 +11,7 @@ export function PromptCard({ p }: { p: Prompt }) {
     e.stopPropagation();
     await navigator.clipboard.writeText(p.prompt);
     setCopied(true);
+    toast.success("Prompt Copied Successfully");
     setTimeout(() => setCopied(false), 1800);
   };
 
