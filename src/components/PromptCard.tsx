@@ -62,23 +62,14 @@ export function PromptCard({ p }: { p: Prompt }) {
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-0 transition group-hover:opacity-100" />
 
             <button
-              onClick={(e) => { e.stopPropagation(); setSaved(!saved); }}
+              type="button"
+              onClick={(e) => { e.stopPropagation(); e.preventDefault(); setSaved(!saved); }}
               aria-label="Save"
               className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full glass-strong opacity-0 transition group-hover:opacity-100 hover:text-primary"
             >
               <Bookmark className={`h-4 w-4 ${saved ? "fill-primary text-primary" : ""}`} />
             </button>
 
-            <div className="absolute inset-x-3 bottom-3 flex gap-2 opacity-0 transition group-hover:opacity-100">
-              <CopyButton prompt={p.prompt} />
-              <button
-                className="grid h-9 w-9 place-items-center rounded-full glass-strong hover:text-primary"
-                aria-label="View"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <Eye className="h-4 w-4" />
-              </button>
-            </div>
           </div>
         </DialogTrigger>
 
