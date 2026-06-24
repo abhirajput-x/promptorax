@@ -1,4 +1,4 @@
-import { Copy, Eye, Bookmark, Check, X } from "lucide-react";
+import { Copy, Bookmark, Check } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import type { Prompt } from "@/lib/prompts";
@@ -9,6 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+
 
 function CopyButton({ prompt, size = "sm" }: { prompt: string; size?: "sm" | "lg" }) {
   const [copied, setCopied] = useState(false);
