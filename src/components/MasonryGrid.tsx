@@ -1,18 +1,25 @@
 import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { PROMPTS, CATEGORIES } from "@/lib/prompts";
+import { fetchDbPrompts } from "@/lib/db-prompts";
 import { PromptCard } from "./PromptCard";
 
 export function MasonryGrid() {
   const [active, setActive] = useState<string>("All");
+  const { data: dbPrompts = [] } = useQuery({
+    queryKey: ["db-prompts"],
+    queryFn: fetchDbPrompts,
+    staleTime: 30_000,
+  });
 
-  // Build a larger feed by repeating curated set
   const feed = useMemo(() => {
-    const base = active === "All" ? PROMPTS : PROMPTS.filter((p) => p.category === active);
-    const pool = base.length ? base : PROMPTS;
-    return Array.from({ length: 4 }).flatMap((_, i) =>
+    const all = [...dbPrompts, ...PROMPTS];
+    const base = active === "All" ? all : all.filter((p) => p.category === active);
+    const pool = base.length ? base : all;
+    return Array.from({ length: 2 }).flatMap((_, i) =>
       pool.map((p, j) => ({ ...p, id: `${p.id}-${i}-${j}` })),
     );
-  }, [active]);
+  }, [active, dbPrompts]);
 
   return (
     <section id="grid" className="mx-auto max-w-[1600px] px-4 py-10 sm:px-6">
