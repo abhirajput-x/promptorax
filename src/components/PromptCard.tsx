@@ -1,5 +1,6 @@
 import { Copy, Eye, Bookmark, Check } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 import type { Prompt } from "@/lib/prompts";
 
 export function PromptCard({ p }: { p: Prompt }) {
