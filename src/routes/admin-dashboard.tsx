@@ -11,9 +11,11 @@ import {
   Image as ImageIcon,
   ShieldCheck,
   X,
+  FileUp,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { CATEGORIES } from "@/lib/prompts";
+import { BulkImport } from "@/components/admin/BulkImport";
 
 export const Route = createFileRoute("/admin-dashboard")({
   ssr: false,
