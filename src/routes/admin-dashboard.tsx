@@ -41,6 +41,7 @@ function AdminDashboard() {
   const [search, setSearch] = useState("");
   const [editing, setEditing] = useState<Row | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [showBulk, setShowBulk] = useState(false);
 
   useEffect(() => {
     (async () => {
