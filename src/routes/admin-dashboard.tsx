@@ -11,9 +11,11 @@ import {
   Image as ImageIcon,
   ShieldCheck,
   X,
+  FileUp,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { CATEGORIES } from "@/lib/prompts";
+import { BulkImport } from "@/components/admin/BulkImport";
 
 export const Route = createFileRoute("/admin-dashboard")({
   ssr: false,
@@ -39,6 +41,7 @@ function AdminDashboard() {
   const [search, setSearch] = useState("");
   const [editing, setEditing] = useState<Row | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [showBulk, setShowBulk] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -160,15 +163,23 @@ function AdminDashboard() {
               className="w-full bg-transparent text-sm outline-none"
             />
           </div>
-          <button
-            onClick={() => {
-              setEditing(null);
-              setShowForm(true);
-            }}
-            className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary to-cyan-400 px-5 py-2.5 text-sm font-semibold text-background hover:opacity-90"
-          >
-            <Plus className="h-4 w-4" /> Add Prompt
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setShowBulk(true)}
+              className="flex items-center justify-center gap-2 rounded-full glass px-5 py-2.5 text-sm font-semibold hover:text-primary"
+            >
+              <FileUp className="h-4 w-4" /> Bulk Import
+            </button>
+            <button
+              onClick={() => {
+                setEditing(null);
+                setShowForm(true);
+              }}
+              className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary to-cyan-400 px-5 py-2.5 text-sm font-semibold text-background hover:opacity-90"
+            >
+              <Plus className="h-4 w-4" /> Add Prompt
+            </button>
+          </div>
         </div>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -228,6 +239,10 @@ function AdminDashboard() {
             load();
           }}
         />
+      )}
+
+      {showBulk && (
+        <BulkImport onClose={() => setShowBulk(false)} onDone={() => load()} />
       )}
     </main>
   );
