@@ -240,6 +240,10 @@ function AdminDashboard() {
           }}
         />
       )}
+
+      {showBulk && (
+        <BulkImport onClose={() => setShowBulk(false)} onDone={() => load()} />
+      )}
     </main>
   );
 }
