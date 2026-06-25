@@ -57,6 +57,11 @@ export function PromptCard({ p }: { p: Prompt }) {
               width={p.w}
               height={p.h}
               loading="lazy"
+              onError={(e) => {
+                const t = e.currentTarget;
+                const fb = "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&q=80";
+                if (t.src !== fb) t.src = fb;
+              }}
               className="w-full transition duration-500 group-hover:scale-105"
             />
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-0 transition group-hover:opacity-100" />
