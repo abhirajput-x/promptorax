@@ -16,6 +16,16 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { CATEGORIES } from "@/lib/prompts";
 import { BulkImport } from "@/components/admin/BulkImport";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export const Route = createFileRoute("/admin-dashboard")({
   ssr: false,
