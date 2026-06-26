@@ -98,12 +98,18 @@ function AdminDashboard() {
     navigate({ to: "/" });
   }
 
-  async function onDelete(r: Row) {
-    if (!confirm(`Delete "${r.title}"?`)) return;
-    const { error } = await supabase.from("prompts").delete().eq("id", r.id);
-    if (error) return toast.error(error.message);
-    await supabase.storage.from("prompt-images").remove([r.image_url]);
-    toast.success("Prompt deleted");
+  async function confirmDelete() {
+    if (!deleteRow) return;
+    const { error } = await supabase.from("prompts").delete().eq("id", deleteRow.id);
+    if (error) {
+      console.error("Delete failed:", error);
+      toast.error(error.message);
+      setDeleteRow(null);
+      return;
+    }
+    await supabase.storage.from("prompt-images").remove([deleteRow.image_url]);
+    toast.success("Prompt deleted successfully.");
+    setDeleteRow(null);
     load();
   }
 
