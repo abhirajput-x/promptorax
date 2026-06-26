@@ -53,6 +53,7 @@ function AdminDashboard() {
   const [showForm, setShowForm] = useState(false);
   const [showBulk, setShowBulk] = useState(false);
   const [deleteRow, setDeleteRow] = useState<Row | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -99,18 +100,31 @@ function AdminDashboard() {
   }
 
   async function confirmDelete() {
-    if (!deleteRow) return;
-    const { error } = await supabase.from("prompts").delete().eq("id", deleteRow.id);
-    if (error) {
-      console.error("Delete failed:", error);
-      toast.error(error.message);
+    if (!deleteRow || deleting) return;
+    setDeleting(true);
+    const target = deleteRow;
+    try {
+      const { data, error } = await supabase
+        .from("prompts")
+        .delete()
+        .eq("id", target.id)
+        .select("id");
+      if (error) throw error;
+      if (!data || data.length === 0) {
+        throw new Error("Delete blocked by permissions (no rows affected).");
+      }
+      if (target.image_url && !/^https?:\/\//i.test(target.image_url)) {
+        await supabase.storage.from("prompt-images").remove([target.image_url]);
+      }
+      setRows((prev) => prev.filter((r) => r.id !== target.id));
+      toast.success("Prompt deleted successfully.");
       setDeleteRow(null);
-      return;
+    } catch (err: any) {
+      console.error("Delete failed:", err);
+      toast.error(err?.message ?? "Delete failed");
+    } finally {
+      setDeleting(false);
     }
-    await supabase.storage.from("prompt-images").remove([deleteRow.image_url]);
-    toast.success("Prompt deleted successfully.");
-    setDeleteRow(null);
-    load();
   }
 
   const filtered = useMemo(() => {
@@ -262,7 +276,7 @@ function AdminDashboard() {
         <BulkImport onClose={() => setShowBulk(false)} onDone={() => load()} />
       )}
 
-      <AlertDialog open={!!deleteRow} onOpenChange={(open) => !open && setDeleteRow(null)}>
+      <AlertDialog open={!!deleteRow} onOpenChange={(open) => !open && !deleting && setDeleteRow(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete prompt?</AlertDialogTitle>
@@ -271,12 +285,16 @@ function AdminDashboard() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setDeleteRow(null)}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              onClick={confirmDelete}
+              disabled={deleting}
+              onClick={(e) => {
+                e.preventDefault();
+                confirmDelete();
+              }}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              Delete
+              {deleting ? "Deleting…" : "Delete"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
