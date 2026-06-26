@@ -230,7 +230,7 @@ function AdminDashboard() {
                     <Pencil className="h-3.5 w-3.5" /> Edit
                   </button>
                   <button
-                    onClick={() => onDelete(r)}
+                    onClick={() => setDeleteRow(r)}
                     className="flex items-center justify-center gap-1.5 rounded-full bg-destructive/15 px-3 py-1.5 text-xs text-destructive hover:bg-destructive/25"
                   >
                     <Trash2 className="h-3.5 w-3.5" /> Delete
