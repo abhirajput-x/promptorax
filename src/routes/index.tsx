@@ -29,6 +29,7 @@ function Index() {
       <Navbar />
       <main>
         <Hero />
+        <ImageToPrompt />
         <MasonryGrid />
         <CategoriesSection />
         <TrendingSection />
