@@ -299,14 +299,6 @@ function AdminDashboard() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-              onClick={confirmDelete}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </main>
   );
 }
