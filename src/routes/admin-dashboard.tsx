@@ -52,6 +52,7 @@ function AdminDashboard() {
   const [editing, setEditing] = useState<Row | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [showBulk, setShowBulk] = useState(false);
+  const [deleteRow, setDeleteRow] = useState<Row | null>(null);
 
   useEffect(() => {
     (async () => {
