@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
+import { ImageToPrompt } from "@/components/ImageToPrompt";
 import { MasonryGrid } from "@/components/MasonryGrid";
 import { CategoriesSection } from "@/components/CategoriesSection";
 import { TrendingSection } from "@/components/TrendingSection";
