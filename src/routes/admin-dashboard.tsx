@@ -16,6 +16,16 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { CATEGORIES } from "@/lib/prompts";
 import { BulkImport } from "@/components/admin/BulkImport";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export const Route = createFileRoute("/admin-dashboard")({
   ssr: false,
@@ -42,6 +52,7 @@ function AdminDashboard() {
   const [editing, setEditing] = useState<Row | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [showBulk, setShowBulk] = useState(false);
+  const [deleteRow, setDeleteRow] = useState<Row | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -87,12 +98,18 @@ function AdminDashboard() {
     navigate({ to: "/" });
   }
 
-  async function onDelete(r: Row) {
-    if (!confirm(`Delete "${r.title}"?`)) return;
-    const { error } = await supabase.from("prompts").delete().eq("id", r.id);
-    if (error) return toast.error(error.message);
-    await supabase.storage.from("prompt-images").remove([r.image_url]);
-    toast.success("Prompt deleted");
+  async function confirmDelete() {
+    if (!deleteRow) return;
+    const { error } = await supabase.from("prompts").delete().eq("id", deleteRow.id);
+    if (error) {
+      console.error("Delete failed:", error);
+      toast.error(error.message);
+      setDeleteRow(null);
+      return;
+    }
+    await supabase.storage.from("prompt-images").remove([deleteRow.image_url]);
+    toast.success("Prompt deleted successfully.");
+    setDeleteRow(null);
     load();
   }
 
@@ -213,7 +230,7 @@ function AdminDashboard() {
                     <Pencil className="h-3.5 w-3.5" /> Edit
                   </button>
                   <button
-                    onClick={() => onDelete(r)}
+                    onClick={() => setDeleteRow(r)}
                     className="flex items-center justify-center gap-1.5 rounded-full bg-destructive/15 px-3 py-1.5 text-xs text-destructive hover:bg-destructive/25"
                   >
                     <Trash2 className="h-3.5 w-3.5" /> Delete
@@ -244,6 +261,26 @@ function AdminDashboard() {
       {showBulk && (
         <BulkImport onClose={() => setShowBulk(false)} onDone={() => load()} />
       )}
+
+      <AlertDialog open={!!deleteRow} onOpenChange={(open) => !open && setDeleteRow(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete prompt?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete "{deleteRow?.title}"? This cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setDeleteRow(null)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </main>
   );
 }
