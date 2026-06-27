@@ -2,6 +2,7 @@ import { Copy, Bookmark, Check } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import type { Prompt } from "@/lib/prompts";
+import { useAuth } from "@/lib/auth-context";
 import {
   Dialog,
   DialogContent,
@@ -13,14 +14,24 @@ import {
 
 function CopyButton({ prompt, size = "sm" }: { prompt: string; size?: "sm" | "lg" }) {
   const [copied, setCopied] = useState(false);
+  const { requireAuth } = useAuth();
 
-  const handleCopy = async (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const doCopy = async () => {
     await navigator.clipboard.writeText(prompt);
     setCopied(true);
     toast.success("Prompt Copied Successfully");
     setTimeout(() => setCopied(false), 1800);
   };
+
+  const handleCopy = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    requireAuth(doCopy);
+  };
+
+  const className =
+    size === "lg"
+      ? "flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary to-cyan-400 px-6 py-3 text-sm font-semibold text-background transition hover:opacity-90"
+      : "flex flex-1 items-center justify-center gap-1.5 rounded-full bg-gradient-to-r from-primary to-cyan-400 px-3 py-2 text-xs font-semibold text-background transition hover:opacity-90";
 
   const className =
     size === "lg"
