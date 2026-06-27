@@ -48,7 +48,12 @@ function ProfilePage() {
   const save = async () => {
     if (!user || !profile) return;
     setSaving(true);
-    const updates: Record<string, unknown> = {
+    const updates: {
+      display_name: string | null;
+      bio: string;
+      username?: string;
+      username_changed?: boolean;
+    } = {
       display_name: displayName.trim() || null,
       bio: bio.trim(),
     };
