@@ -33,10 +33,6 @@ function CopyButton({ prompt, size = "sm" }: { prompt: string; size?: "sm" | "lg
       ? "flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary to-cyan-400 px-6 py-3 text-sm font-semibold text-background transition hover:opacity-90"
       : "flex flex-1 items-center justify-center gap-1.5 rounded-full bg-gradient-to-r from-primary to-cyan-400 px-3 py-2 text-xs font-semibold text-background transition hover:opacity-90";
 
-  const className =
-    size === "lg"
-      ? "flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary to-cyan-400 px-6 py-3 text-sm font-semibold text-background transition hover:opacity-90"
-      : "flex flex-1 items-center justify-center gap-1.5 rounded-full bg-gradient-to-r from-primary to-cyan-400 px-3 py-2 text-xs font-semibold text-background transition hover:opacity-90";
 
   return (
     <button onClick={handleCopy} className={className}>
